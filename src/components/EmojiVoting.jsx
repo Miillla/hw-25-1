@@ -5,6 +5,7 @@ export default class EmojiVoting extends Component {
     votes: {},
     topEmoji: 0,
     topVotes: "",
+    emojis: ["😊", "😂", "😍", "🤔"],
   };
 
   handleResult = () => {
@@ -34,14 +35,22 @@ export default class EmojiVoting extends Component {
     });
     console.log(event.target.getAttribute("data-emoji"), updatedVotes);
   };
+  handleClean = (event) => {
+    const { votes } = this.state;
+
+    console.log(votes);
+    this.setState({
+      votes: {},
+    });
+  };
   render() {
-    const emojis = ["😊", "😂", "😍", "🤔"];
-    const { topEmoji, topVotes } = this.state;
+    const { topEmoji, topVotes, emojis } = this.state;
     return (
       <div>
         <h1>Vote for Your Favorite Emoji!</h1>
+
         <div className="d-flex flex-row bd-highlight mb-3 justify-content-center gap-3 ">
-          {Object.entries(emojis).map(([key, emoji]) => (
+          {emojis.map((emoji, key) => (
             <div
               key={key}
               className="d-flex flex-row "
@@ -63,6 +72,9 @@ export default class EmojiVoting extends Component {
         >
           {topEmoji && `${topEmoji}  ${topVotes} `}
         </p>
+        <button className="btn btn-primary" onClick={this.handleClean}>
+          Clean Button
+        </button>
       </div>
     );
   }
