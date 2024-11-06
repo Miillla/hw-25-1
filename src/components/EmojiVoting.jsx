@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class EmojiVoting extends Component {
   state = {
-    votes: {},
+    votes: JSON.parse(localStorage.getItem("votes")) || {},
     topEmoji: 0,
     topVotes: "",
     emojis: ["😊", "😂", "😍", "🤔"],
@@ -30,17 +30,20 @@ export default class EmojiVoting extends Component {
     const updatedVotes = { ...this.state.votes };
     const emoji = event.target.getAttribute("data-emoji");
     updatedVotes[emoji] = (updatedVotes[emoji] || 0) + 1;
-    this.setState({
-      votes: updatedVotes,
+    this.setState({ votes: updatedVotes }, () => {
+      localStorage.setItem("votes", JSON.stringify(this.state.votes));
     });
     console.log(event.target.getAttribute("data-emoji"), updatedVotes);
   };
   handleClean = (event) => {
+    localStorage.setItem("votes", JSON.stringify(this.state.votes));
     const { votes } = this.state;
 
     console.log(votes);
     this.setState({
       votes: {},
+      topEmoji: "",
+      topVotes: 0,
     });
   };
   render() {
